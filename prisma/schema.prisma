@@ -1,0 +1,44 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// Model de Clientes
+model Cliente {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  whatsapp  String
+  bilhetes  Bilhete[]
+}
+
+// Model de Rifa (Pode ter várias)
+model Rifa {
+  id          Int      @id @default(autoincrement())
+  titulo      String
+  descricao   String
+  modalidade  String   // 'grupo', 'dezena', 'centena', 'milhar'
+  preco       Float
+  dataEncerramento DateTime
+  ativa       Boolean  @default(true)
+  bilhetes    Bilhete[]
+}
+
+// Model de Bilhete (O número da sorte)
+model Bilhete {
+  id        Int      @id @default(autoincrement())
+  numero    String   // Ex: 0001, 050, 25
+  status    String   @default("disponivel") // disponivel, reservado, pago
+  
+  rifaId    Int
+  rifa      Rifa     @relation(fields: [rifaId], references: [id])
+  
+  clienteId Int?
+  cliente   Cliente? @relation(fields: [clienteId], references: [id])
+}
+
