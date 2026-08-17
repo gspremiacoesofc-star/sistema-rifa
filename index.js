@@ -5,6 +5,10 @@ const multer = require('multer');
 const path = require('path');
 
 const app = express();
+
+app.get('/', (req, res) => {
+  res.redirect('/admin');
+});
 const PORT = 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -230,6 +234,4 @@ app.listen(PORT, () => {
     console.log(`🚀 Servidor rodando na porta ${PORT}`);
 });
 
-app.get('/', (req, res) => {
-  res.redirect('/admin');
-});
+
